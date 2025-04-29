@@ -1,12 +1,21 @@
 import mongoose from "mongoose"
-import "dotenv"
+import dotenv from "dotenv"
 
-export default function connectDB() {
-    const mongo_url = process.env.MONGO_URI || "mongodb://localhost:27017/test"
-        try {
-        mongoose.connect(mongo_url)
-        console.log("Connection to database succesfull.")
-    } catch {
-        console.log("Error connecting to database.")
+dotenv.config()
+
+export default async function connectDB() {
+    const mongo_url = process.env.MONGO_URL
+    
+    if (!mongo_url) {
+        console.error("MONGO_URL environment variable is not defined")
+        throw new Error("Database connection URL missing - check your .env file")
+        return // Not needed after throw, but added for clarity
+    }
+    
+    try {
+        await mongoose.connect(mongo_url)
+        console.log("Connection to database successful.")
+    } catch (error) {
+        console.error("Error connecting to database:", error)
     }
 }
