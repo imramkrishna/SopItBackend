@@ -139,4 +139,15 @@ router.put("/modifyProducts/:id", async (req, res) => {
     }
 
 })
+router.get("/productList", async (req, res) => {
+    try {
+        console.log("request on /productList route.")
+        const productlist=await product.find({});
+        res.send(productlist)
+    }
+    catch (e) {
+        res.send("Error found while finding productlist")
+        console.log("Error found while processing your request")
+    }
+})
 export default router;
